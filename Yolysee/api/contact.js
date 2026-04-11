@@ -50,8 +50,8 @@ export default async function handler(req) {
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const TO_EMAIL = process.env.TO_EMAIL || 'hello@yolysse.com';
-  const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@yolysse.com';
+  const TO_EMAIL = 'contact.globalratings@gmail.com';
+  const FROM_EMAIL = 'onboarding@resend.dev';
 
   if (!RESEND_API_KEY) {
     console.error('RESEND_API_KEY is not set');
