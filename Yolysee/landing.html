@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,13 +32,13 @@
       </a>
     </div>
     <div class="nav-right">
-      <button class="nav-icon" aria-label="Search">
+      <button class="nav-icon search-toggle-btn" id="searchToggleBtn" aria-label="Search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
       <button class="nav-icon" aria-label="Wishlist">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </button>
-      <button class="nav-icon cart-icon" aria-label="Cart">
+      <button class="nav-icon cart-icon" id="cartIconBtn" aria-label="Cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="cart-count">0</span>
       </button>
@@ -48,7 +48,17 @@
     </div>
   </header>
 
-  <!-- Mobile Menu -->
+  <!-- ══════════════════ SEARCH BAR (below navbar) ══════════════════ -->
+  <div class="search-bar-wrap" id="searchBarWrap">
+    <div class="search-bar-inner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search rings, necklaces, earrings…" autocomplete="off" />
+      <button class="search-close-btn" id="searchCloseBtn" aria-label="Close search">✕</button>
+    </div>
+  </div>
+  <div class="search-backdrop" id="searchBackdrop"></div>
+
+  <!-- ══════════════════ MOBILE MENU ══════════════════ -->
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" id="closeMenu">✕</button>
     <img src="assets/images/5507.png" alt="YOLYSSE" class="mobile-logo" />
@@ -56,10 +66,50 @@
       <a href="#collections">Collections</a>
       <a href="#new">New In</a>
       <a href="#about">Our Story</a>
-      <a href="#">Contact</a>
+      <a href="#contact">Contact</a>
     </nav>
+
+    <!-- Dark/Light Mode Switch in Sidebar -->
+    <div class="sidebar-theme-switch">
+      <span class="sidebar-theme-label">
+        <span class="theme-sun-icon">☀</span> Light Mode
+      </span>
+      <label class="toggle-switch" aria-label="Toggle theme">
+        <input type="checkbox" id="sidebarThemeToggle" />
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+      <span class="sidebar-theme-label">
+        <span class="theme-moon-icon">☾</span> Dark Mode
+      </span>
+    </div>
   </div>
   <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- ══════════════════ CART OVERLAY ══════════════════ -->
+  <div class="cart-overlay-backdrop" id="cartBackdrop"></div>
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-overlay-header">
+      <h3>Your Cart <span class="cart-overlay-count" id="cartOverlayCount">(0 items)</span></h3>
+      <button class="cart-overlay-close" id="cartOverlayClose">✕</button>
+    </div>
+    <div class="cart-items-list" id="cartItemsList">
+      <div class="cart-empty-state" id="cartEmptyState">
+        <div class="cart-empty-icon">◈</div>
+        <p>Your cart is empty</p>
+        <span>Add something beautiful</span>
+      </div>
+    </div>
+    <div class="cart-overlay-footer" id="cartFooter">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span class="cart-total-price" id="cartTotalPrice">₹0</span>
+      </div>
+      <button class="btn-primary cart-checkout-btn">Proceed to Checkout</button>
+      <p class="cart-secure-note">✦ Secure checkout · Free shipping above ₹999</p>
+    </div>
+  </div>
 
   <!-- ══════════════════ HERO ══════════════════ -->
   <section class="hero" id="hero">
@@ -142,9 +192,6 @@
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="assets/images/file_00000000335071fa888529d1e14fc44c.png" alt="Crystal Arc Ring" class="product-img" />
-          <div class="product-overlay">
-            <button class="quick-add" onclick="addToCart(this)" data-name="Crystal Arc Ring" data-price="1199">Quick Add</button>
-          </div>
           <div class="product-badge">New</div>
           <button class="wishlist-btn" aria-label="Wishlist">♡</button>
         </div>
@@ -156,6 +203,10 @@
             <span class="product-og-price">₹1,799</span>
           </div>
           <div class="product-stars">★★★★★ <span>(24)</span></div>
+          <button class="product-add-btn" onclick="addToCart(this)" data-name="Crystal Arc Ring" data-price="1199">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Add to Cart
+          </button>
         </div>
       </div>
 
@@ -163,9 +214,6 @@
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="assets/images/file_0000000038cc71fa9a79e31f586d115d.png" alt="Duo Dome Ring Set" class="product-img" />
-          <div class="product-overlay">
-            <button class="quick-add" onclick="addToCart(this)" data-name="Duo Dome Ring Set" data-price="1499">Quick Add</button>
-          </div>
           <div class="product-badge new-badge">Bestseller</div>
           <button class="wishlist-btn" aria-label="Wishlist">♡</button>
         </div>
@@ -177,6 +225,10 @@
             <span class="product-og-price">₹2,199</span>
           </div>
           <div class="product-stars">★★★★★ <span>(41)</span></div>
+          <button class="product-add-btn" onclick="addToCart(this)" data-name="Duo Dome Ring Set" data-price="1499">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Add to Cart
+          </button>
         </div>
       </div>
 
@@ -184,9 +236,6 @@
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="assets/images/file_000000009e5471fab9bd68ce84aa7029.png" alt="Eclipse Statement Ring" class="product-img" />
-          <div class="product-overlay">
-            <button class="quick-add" onclick="addToCart(this)" data-name="Eclipse Statement Ring" data-price="1299">Quick Add</button>
-          </div>
           <button class="wishlist-btn" aria-label="Wishlist">♡</button>
         </div>
         <div class="product-info">
@@ -196,6 +245,10 @@
             <span class="product-price">₹1,299</span>
           </div>
           <div class="product-stars">★★★★☆ <span>(18)</span></div>
+          <button class="product-add-btn" onclick="addToCart(this)" data-name="Eclipse Statement Ring" data-price="1299">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Add to Cart
+          </button>
         </div>
       </div>
 
@@ -203,9 +256,6 @@
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="assets/images/file_00000000c1f471fa9109289d8c7e68ed.png" alt="Serpent Coil Ring" class="product-img" />
-          <div class="product-overlay">
-            <button class="quick-add" onclick="addToCart(this)" data-name="Serpent Coil Ring" data-price="1599">Quick Add</button>
-          </div>
           <div class="product-badge">Limited</div>
           <button class="wishlist-btn" aria-label="Wishlist">♡</button>
         </div>
@@ -217,6 +267,10 @@
             <span class="product-og-price">₹2,499</span>
           </div>
           <div class="product-stars">★★★★★ <span>(57)</span></div>
+          <button class="product-add-btn" onclick="addToCart(this)" data-name="Serpent Coil Ring" data-price="1599">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            Add to Cart
+          </button>
         </div>
       </div>
 
@@ -309,19 +363,27 @@
     <div class="lifestyle-grid">
       <div class="lifestyle-img tall">
         <img src="assets/images/file_000000007e7071faaae2e576e9c3d72e.png" alt="Lifestyle" />
-        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+        <div class="lifestyle-hover">
+          <a href="#" class="shop-look-btn">♡ Shop this look</a>
+        </div>
       </div>
       <div class="lifestyle-img">
         <img src="assets/images/file_00000000c1f471fa9109289d8c7e68ed.png" alt="Lifestyle" />
-        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+        <div class="lifestyle-hover">
+          <a href="#" class="shop-look-btn">♡ Shop this look</a>
+        </div>
       </div>
       <div class="lifestyle-img">
         <img src="assets/images/file_0000000027ec71fa8fae2a2b4b136fa5.png" alt="Lifestyle" />
-        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+        <div class="lifestyle-hover">
+          <a href="#" class="shop-look-btn">♡ Shop this look</a>
+        </div>
       </div>
       <div class="lifestyle-img wide">
         <img src="assets/images/file_0000000003bc71fa95d7ec3c0de6ab3c.png" alt="Lifestyle" />
-        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+        <div class="lifestyle-hover">
+          <a href="#" class="shop-look-btn">♡ Shop this look</a>
+        </div>
       </div>
     </div>
   </section>
@@ -348,55 +410,73 @@
       <p class="section-eyebrow">What They Say</p>
       <h2 class="section-title">Loved by Many</h2>
     </div>
-    <div class="testimonials-track" id="testimonialsTrack">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"The serpent ring is absolutely stunning. I get compliments every time I wear it. Packaging was gorgeous too!"</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">P</div>
-          <div>
-            <strong>Priya M.</strong>
-            <span>Mumbai</span>
+
+    <!-- Testimonials Slider -->
+    <div class="testimonials-slider-wrap">
+      <div class="testimonials-slider" id="testimonialsSlider">
+        <div class="testimonial-slide active">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>"The serpent ring is absolutely stunning. I get compliments every time I wear it. Packaging was gorgeous too!"</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar">P</div>
+              <div>
+                <strong>Priya M.</strong>
+                <span>Mumbai</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"Ordered the duo dome ring set as a gift. My friend absolutely loved it. Quality is way better than the price suggests."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">A</div>
-          <div>
-            <strong>Anika S.</strong>
-            <span>Delhi</span>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>"Ordered the duo dome ring set as a gift. My friend absolutely loved it. Quality is way better than the price suggests."</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar">A</div>
+              <div>
+                <strong>Anika S.</strong>
+                <span>Delhi</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p>"The crystal arc ring is so elegant. Wore it to a wedding and everyone asked where I got it from. 10/10 would recommend!"</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">R</div>
-          <div>
-            <strong>Ritu K.</strong>
-            <span>Bangalore</span>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p>"The crystal arc ring is so elegant. Wore it to a wedding and everyone asked where I got it from. 10/10 would recommend!"</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar">R</div>
+              <div>
+                <strong>Ritu K.</strong>
+                <span>Bangalore</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★☆</div>
-        <p>"Beautiful jewellery and super fast delivery. The box is so pretty I didn't want to open it! Will definitely order again."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">N</div>
-          <div>
-            <strong>Neha T.</strong>
-            <span>Pune</span>
+        <div class="testimonial-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★☆</div>
+            <p>"Beautiful jewellery and super fast delivery. The box is so pretty I didn't want to open it! Will definitely order again."</p>
+            <div class="reviewer">
+              <div class="reviewer-avatar">N</div>
+              <div>
+                <strong>Neha T.</strong>
+                <span>Pune</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="testimonial-nav">
-      <button onclick="scrollTestimonials(-1)">←</button>
-      <button onclick="scrollTestimonials(1)">→</button>
+      <button id="testimonialPrev" aria-label="Previous">←</button>
+      <div class="testimonial-dots" id="testimonialDots">
+        <button class="t-dot active" data-index="0"></button>
+        <button class="t-dot" data-index="1"></button>
+        <button class="t-dot" data-index="2"></button>
+        <button class="t-dot" data-index="3"></button>
+      </div>
+      <button id="testimonialNext" aria-label="Next">→</button>
     </div>
   </section>
 
@@ -412,6 +492,72 @@
         <button onclick="subscribeEmail()">Subscribe</button>
       </div>
       <p class="newsletter-note">✦ No spam, ever. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════ CONTACT SECTION ══════════════════ -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-info">
+        <p class="section-eyebrow">Get in Touch</p>
+        <h2 class="contact-title">We'd love to<br /><em>hear from you</em></h2>
+        <p class="contact-desc">Whether you have a question about an order, need help with sizing, or just want to say hello — we're here for you.</p>
+        <div class="contact-details">
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">✉</div>
+            <div>
+              <strong>Email Us</strong>
+              <span>hello@yolysse.com</span>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">◎</div>
+            <div>
+              <strong>WhatsApp</strong>
+              <span>+91 98XXX XXXXX</span>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">◷</div>
+            <div>
+              <strong>Response Time</strong>
+              <span>Within 24 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap">
+        <div class="contact-form-success" id="contactSuccess">
+          <div class="success-icon">✓</div>
+          <h3>Message Sent!</h3>
+          <p>We'll get back to you within 24 hours.</p>
+        </div>
+        <div class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactName">Your Name</label>
+              <input type="text" id="contactName" placeholder="Priya Sharma" />
+            </div>
+            <div class="form-group">
+              <label for="contactEmail">Email Address</label>
+              <input type="email" id="contactEmail" placeholder="priya@email.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">Subject</label>
+            <input type="text" id="contactSubject" placeholder="Order enquiry, sizing help…" />
+          </div>
+          <div class="form-group">
+            <label for="contactMsg">Message</label>
+            <textarea id="contactMsg" rows="5" placeholder="Tell us how we can help…"></textarea>
+          </div>
+          <button class="btn-primary contact-submit-btn" id="contactSubmitBtn" onclick="submitContact()">
+            <span id="contactBtnText">Send Message</span>
+            <span id="contactBtnLoader" style="display:none">Sending…</span>
+          </button>
+          <p class="contact-form-note">✦ We'll never share your details with anyone.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -451,7 +597,7 @@
           <li><a href="#">Shipping Info</a></li>
           <li><a href="#">Returns</a></li>
           <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="#contact">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
