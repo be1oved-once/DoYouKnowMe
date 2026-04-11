@@ -50,7 +50,7 @@ export default async function handler(req) {
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const TO_EMAIL = 'contact.globalratings@gmail.com';
+  const TO_EMAIL = 'wear.yolysse@gmail.com';
   const FROM_EMAIL = 'onboarding@resend.dev';
 
   if (!RESEND_API_KEY) {
