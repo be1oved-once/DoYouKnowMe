@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOLYSSE — Fine Jewellery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════ ANNOUNCEMENT BAR ══════════════════ -->
+  <div class="announcement-bar">
+    <span>✦ Free shipping on orders above ₹999 &nbsp;&nbsp;✦&nbsp;&nbsp; Use code <strong>YOLYSSE10</strong> for 10% off your first order &nbsp;&nbsp;✦&nbsp;&nbsp; Handcrafted with love</span>
+  </div>
+
+  <!-- ══════════════════ NAVBAR ══════════════════ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-left">
+      <nav class="nav-links">
+        <a href="#collections">Collections</a>
+        <a href="#new">New In</a>
+        <a href="#about">Our Story</a>
+      </nav>
+    </div>
+    <div class="nav-logo">
+      <a href="#">
+        <img src="assets/images/5507.png" alt="YOLYSSE" class="logo-img" />
+        <span class="logo-text">YOLYSSE</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-icon" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-icon" aria-label="Wishlist">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button class="nav-icon cart-icon" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" id="closeMenu">✕</button>
+    <img src="assets/images/5507.png" alt="YOLYSSE" class="mobile-logo" />
+    <nav>
+      <a href="#collections">Collections</a>
+      <a href="#new">New In</a>
+      <a href="#about">Our Story</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- ══════════════════ HERO ══════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal">New Collection — Spring 2025</p>
+      <h1 class="hero-title reveal">
+        Wear What<br /><em>Defines You</em>
+      </h1>
+      <p class="hero-sub reveal">
+        Handcrafted fine jewellery for the bold, the subtle,<br />and every soul in between.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#collections" class="btn-primary">Explore Collections</a>
+        <a href="#new" class="btn-ghost">New Arrivals →</a>
+      </div>
+    </div>
+
+    <div class="hero-float-cards">
+      <div class="float-card float-card-1 reveal-right">
+        <img src="assets/images/file_000000007e7071faaae2e576e9c3d72e.png" alt="Statement Ring" />
+        <div class="float-card-label">
+          <span>Statement Ring</span>
+          <span class="float-price">₹1,299</span>
+        </div>
+      </div>
+      <div class="float-card float-card-2 reveal-right" style="animation-delay:0.2s">
+        <img src="assets/images/file_00000000c1f471fa9109289d8c7e68ed.png" alt="Serpent Ring" />
+        <div class="float-card-label">
+          <span>Serpent Ring</span>
+          <span class="float-price">₹1,599</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════ BRAND PILLARS ══════════════════ -->
+  <section class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">✦</div>
+      <h3>Handcrafted</h3>
+      <p>Every piece is thoughtfully designed and crafted with precision.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◈</div>
+      <h3>Tarnish-Free</h3>
+      <p>Premium materials that stay radiant through every season.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">⟁</div>
+      <h3>Gift-Ready</h3>
+      <p>Arrives in a signature black box, ready to be gifted or kept.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◯</div>
+      <h3>Easy Returns</h3>
+      <p>7-day hassle-free returns. Your satisfaction, guaranteed.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FEATURED / NEW IN ══════════════════ -->
+  <section class="products-section" id="new">
+    <div class="section-header">
+      <p class="section-eyebrow">Just Arrived</p>
+      <h2 class="section-title">New In</h2>
+      <p class="section-sub">Fresh drops to elevate your everyday look</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Product 1 -->
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="assets/images/file_00000000335071fa888529d1e14fc44c.png" alt="Crystal Arc Ring" class="product-img" />
+          <div class="product-overlay">
+            <button class="quick-add" onclick="addToCart(this)" data-name="Crystal Arc Ring" data-price="1199">Quick Add</button>
+          </div>
+          <div class="product-badge">New</div>
+          <button class="wishlist-btn" aria-label="Wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <p class="product-category">Rings</p>
+          <h3 class="product-name">Crystal Arc Ring</h3>
+          <div class="product-price-row">
+            <span class="product-price">₹1,199</span>
+            <span class="product-og-price">₹1,799</span>
+          </div>
+          <div class="product-stars">★★★★★ <span>(24)</span></div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="assets/images/file_0000000038cc71fa9a79e31f586d115d.png" alt="Duo Dome Ring Set" class="product-img" />
+          <div class="product-overlay">
+            <button class="quick-add" onclick="addToCart(this)" data-name="Duo Dome Ring Set" data-price="1499">Quick Add</button>
+          </div>
+          <div class="product-badge new-badge">Bestseller</div>
+          <button class="wishlist-btn" aria-label="Wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <p class="product-category">Rings</p>
+          <h3 class="product-name">Duo Dome Ring Set</h3>
+          <div class="product-price-row">
+            <span class="product-price">₹1,499</span>
+            <span class="product-og-price">₹2,199</span>
+          </div>
+          <div class="product-stars">★★★★★ <span>(41)</span></div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="assets/images/file_000000009e5471fab9bd68ce84aa7029.png" alt="Eclipse Statement Ring" class="product-img" />
+          <div class="product-overlay">
+            <button class="quick-add" onclick="addToCart(this)" data-name="Eclipse Statement Ring" data-price="1299">Quick Add</button>
+          </div>
+          <button class="wishlist-btn" aria-label="Wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <p class="product-category">Rings</p>
+          <h3 class="product-name">Eclipse Statement Ring</h3>
+          <div class="product-price-row">
+            <span class="product-price">₹1,299</span>
+          </div>
+          <div class="product-stars">★★★★☆ <span>(18)</span></div>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="assets/images/file_00000000c1f471fa9109289d8c7e68ed.png" alt="Serpent Coil Ring" class="product-img" />
+          <div class="product-overlay">
+            <button class="quick-add" onclick="addToCart(this)" data-name="Serpent Coil Ring" data-price="1599">Quick Add</button>
+          </div>
+          <div class="product-badge">Limited</div>
+          <button class="wishlist-btn" aria-label="Wishlist">♡</button>
+        </div>
+        <div class="product-info">
+          <p class="product-category">Rings</p>
+          <h3 class="product-name">Serpent Coil Ring</h3>
+          <div class="product-price-row">
+            <span class="product-price">₹1,599</span>
+            <span class="product-og-price">₹2,499</span>
+          </div>
+          <div class="product-stars">★★★★★ <span>(57)</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-cta">
+      <a href="#collections" class="btn-primary">View All Products</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════ SPLIT FEATURE BANNER ══════════════════ -->
+  <section class="feature-split" id="collections">
+    <div class="feature-split-img">
+      <img src="assets/images/file_0000000027ec71fa8fae2a2b4b136fa5.png" alt="Serpent Ring on hand" />
+    </div>
+    <div class="feature-split-content">
+      <p class="section-eyebrow">Signature Series</p>
+      <h2 class="feature-title">The Serpent<br /><em>Collection</em></h2>
+      <p class="feature-desc">
+        Inspired by ancient symbols of power and renewal, our Serpent Collection wraps you in bold craftsmanship. Each ring is encrusted with hand-set crystals over a warm gold base — a piece that commands attention.
+      </p>
+      <ul class="feature-list">
+        <li>✦ 18K gold-plated finish</li>
+        <li>✦ Cubic zirconia stone setting</li>
+        <li>✦ Adjustable open-band design</li>
+        <li>✦ Signature gift box included</li>
+      </ul>
+      <a href="#" class="btn-primary">Shop the Collection</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════ SECOND FEATURE (reversed) ══════════════════ -->
+  <section class="feature-split feature-split-rev">
+    <div class="feature-split-content">
+      <p class="section-eyebrow">Bold Minimalism</p>
+      <h2 class="feature-title">Dome &<br /><em>Sculptural Rings</em></h2>
+      <p class="feature-desc">
+        The architectural beauty of form — our dome rings are sculpted from polished metal in gold and silver tones. A statement that needs no gemstone, just pure shape.
+      </p>
+      <ul class="feature-list">
+        <li>✦ Available in gold & gunmetal</li>
+        <li>✦ Hypoallergenic stainless steel</li>
+        <li>✦ Wear alone or stacked</li>
+        <li>✦ One size fits most</li>
+      </ul>
+      <a href="#" class="btn-primary">Shop Dome Rings</a>
+    </div>
+    <div class="feature-split-img">
+      <img src="assets/images/file_0000000003bc71fa95d7ec3c0de6ab3c.png" alt="Dome rings in box" />
+    </div>
+  </section>
+
+  <!-- ══════════════════ LIFESTYLE MARQUEE ══════════════════ -->
+  <section class="marquee-section">
+    <div class="marquee-track">
+      <span>FINE JEWELLERY</span>
+      <span class="dot">✦</span>
+      <span>HANDCRAFTED</span>
+      <span class="dot">✦</span>
+      <span>STATEMENT PIECES</span>
+      <span class="dot">✦</span>
+      <span>GIFT-READY</span>
+      <span class="dot">✦</span>
+      <span>TARNISH-FREE</span>
+      <span class="dot">✦</span>
+      <span>YOLYSSE</span>
+      <span class="dot">✦</span>
+      <span>FINE JEWELLERY</span>
+      <span class="dot">✦</span>
+      <span>HANDCRAFTED</span>
+      <span class="dot">✦</span>
+      <span>STATEMENT PIECES</span>
+      <span class="dot">✦</span>
+      <span>GIFT-READY</span>
+      <span class="dot">✦</span>
+      <span>TARNISH-FREE</span>
+      <span class="dot">✦</span>
+      <span>YOLYSSE</span>
+      <span class="dot">✦</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════ INSTAGRAM GRID / LIFESTYLE ══════════════════ -->
+  <section class="lifestyle-section">
+    <div class="section-header">
+      <p class="section-eyebrow">Styled By You</p>
+      <h2 class="section-title">Wear It Your Way</h2>
+      <p class="section-sub">Tag us <strong>@yolysse</strong> to be featured</p>
+    </div>
+    <div class="lifestyle-grid">
+      <div class="lifestyle-img tall">
+        <img src="assets/images/file_000000007e7071faaae2e576e9c3d72e.png" alt="Lifestyle" />
+        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+      </div>
+      <div class="lifestyle-img">
+        <img src="assets/images/file_00000000c1f471fa9109289d8c7e68ed.png" alt="Lifestyle" />
+        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+      </div>
+      <div class="lifestyle-img">
+        <img src="assets/images/file_0000000027ec71fa8fae2a2b4b136fa5.png" alt="Lifestyle" />
+        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+      </div>
+      <div class="lifestyle-img wide">
+        <img src="assets/images/file_0000000003bc71fa95d7ec3c0de6ab3c.png" alt="Lifestyle" />
+        <div class="lifestyle-hover"><span>♡ Shop this look</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ ABOUT / BRAND STORY ══════════════════ -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-logo-wrap">
+        <img src="assets/images/5507.png" alt="YOLYSSE" />
+      </div>
+      <div class="about-text">
+        <p class="section-eyebrow">Our Story</p>
+        <h2 class="about-title">Born from a love<br />of <em>quiet luxury</em></h2>
+        <p>YOLYSSE was born from a simple belief — that beautiful jewellery should be accessible, enduring, and meaningful. Every piece in our collection is a testament to thoughtful design, where form meets feeling and metal meets memory.</p>
+        <p>We craft each piece for women who know their worth, who wear their stories on their hands, who choose jewellery not for trends but for moments.</p>
+        <a href="#" class="btn-ghost">Read Our Full Story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ TESTIMONIALS ══════════════════ -->
+  <section class="testimonials-section">
+    <div class="section-header">
+      <p class="section-eyebrow">What They Say</p>
+      <h2 class="section-title">Loved by Many</h2>
+    </div>
+    <div class="testimonials-track" id="testimonialsTrack">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"The serpent ring is absolutely stunning. I get compliments every time I wear it. Packaging was gorgeous too!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">P</div>
+          <div>
+            <strong>Priya M.</strong>
+            <span>Mumbai</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"Ordered the duo dome ring set as a gift. My friend absolutely loved it. Quality is way better than the price suggests."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">A</div>
+          <div>
+            <strong>Anika S.</strong>
+            <span>Delhi</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"The crystal arc ring is so elegant. Wore it to a wedding and everyone asked where I got it from. 10/10 would recommend!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">R</div>
+          <div>
+            <strong>Ritu K.</strong>
+            <span>Bangalore</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★☆</div>
+        <p>"Beautiful jewellery and super fast delivery. The box is so pretty I didn't want to open it! Will definitely order again."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">N</div>
+          <div>
+            <strong>Neha T.</strong>
+            <span>Pune</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-nav">
+      <button onclick="scrollTestimonials(-1)">←</button>
+      <button onclick="scrollTestimonials(1)">→</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════ NEWSLETTER ══════════════════ -->
+  <section class="newsletter-section">
+    <div class="newsletter-inner">
+      <div class="newsletter-orb"></div>
+      <img src="assets/images/5507.png" alt="" class="newsletter-logo" />
+      <h2>Be the First to Know</h2>
+      <p>Join our circle for early access to new drops, exclusive offers, and jewellery care tips.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Your email address" id="emailInput" />
+        <button onclick="subscribeEmail()">Subscribe</button>
+      </div>
+      <p class="newsletter-note">✦ No spam, ever. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="assets/images/5507.png" alt="YOLYSSE" class="footer-logo" />
+        <span>YOLYSSE</span>
+        <p>Fine jewellery crafted for the ones who dare to shine.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+          </a>
+          <a href="#" aria-label="Pinterest">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.76 1.22-5.17 1.22-5.17s-.31-.62-.31-1.55c0-1.45.84-2.54 1.88-2.54.89 0 1.32.67 1.32 1.47 0 .89-.57 2.24-.87 3.48-.25 1.04.52 1.88 1.53 1.88 1.84 0 3.08-2.34 3.08-5.11 0-2.11-1.43-3.59-3.48-3.59-2.37 0-3.76 1.78-3.76 3.61 0 .71.27 1.48.62 1.9.07.08.08.15.06.23-.06.26-.2.84-.23.95-.04.15-.13.18-.3.11C7.1 13.54 6.5 11.87 6.5 10.5c0-2.9 2.11-5.57 6.08-5.57 3.2 0 5.68 2.28 5.68 5.31 0 3.17-2 5.72-4.77 5.72-.93 0-1.81-.48-2.11-1.06l-.57 2.14c-.21.79-.77 1.79-1.14 2.39.86.27 1.77.41 2.71.41 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">New In</a></li>
+          <li><a href="#">Rings</a></li>
+          <li><a href="#">Earrings</a></li>
+          <li><a href="#">Necklaces</a></li>
+          <li><a href="#">Gift Sets</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Jewellery Care</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Wholesale</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 YOLYSSE. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-payments">
+        <span>UPI</span>
+        <span>Visa</span>
+        <span>Mastercard</span>
+        <span>RazorPay</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════ CART TOAST ══════════════════ -->
+  <div class="cart-toast" id="cartToast">
+    <span class="toast-icon">✓</span>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+
+  <!-- ══════════════════ BACK TO TOP ══════════════════ -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

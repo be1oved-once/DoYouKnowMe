@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play Quiz - DoYouKnowMe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Chewy&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        :root{--neon-pink:#ff4d8d;--electric-purple:#c77dff;--hot-orange:#ff758f;--cyan-blast:#ff8fab;--lemon-yellow:#ffc2d1;--deep-bg:#1a0015;--card-bg:#2a0023;--input-bg:#3a0032}
+        html,body{height:100%;overflow-x:hidden}
+        body{font-family:'Righteous',cursive;background:var(--deep-bg);color:white;line-height:1.4}
+        .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(199,125,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(199,125,255,.1) 1px,transparent 1px);background-size:50px 50px;z-index:-2;animation:gridMove 20s linear infinite}
+        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
+        .noise{position:fixed;top:0;left:0;width:100%;height:100%;opacity:.03;z-index:-1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");pointer-events:none}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:.6rem .75rem;position:fixed;top:0;left:0;right:0;height:50px;background:rgba(26,0,21,.95);backdrop-filter:blur(10px);z-index:100;border-bottom:2px solid rgba(199,125,255,.3)}
+        .logo{font-family:'Rubik Bubbles',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--neon-pink),var(--electric-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+        .quiz-info{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.7)}
+        .progress-bar{width:70px;height:5px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-pink),var(--hot-orange));width:0%;transition:width .5s ease;box-shadow:0 0 10px var(--neon-pink)}
+        .container{max-width:500px;margin:0 auto;padding:55px .75rem 1rem;min-height:100vh}
+        .loading-screen,.error-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);text-align:center;gap:1rem}
+        .spinner{width:50px;height:50px;border:4px solid rgba(199,125,255,.3);border-top:4px solid var(--neon-pink);border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{font-family:'Chewy',cursive;font-size:1.2rem;color:var(--cyan-blast)}
+        .error-icon{font-size:3rem}
+        .error-title{font-family:'Bungee Shade',cursive;font-size:1.4rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .error-text{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7)}
+        /* Intro */
+        .intro-screen{text-align:center;padding:.5rem;animation:fadeIn .5s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .creator-avatar{width:70px;height:70px;background:linear-gradient(135deg,var(--electric-purple),var(--neon-pink));border-radius:50%;margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(199,125,255,.5);animation:pulse 2s infinite;font-size:2rem}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        .intro-title{font-family:'Bungee Shade',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.25rem;line-height:1.2}
+        .intro-subtitle{font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:1.25rem;line-height:1.3}
+        .name-input-wrapper{width:100%;max-width:260px;margin-bottom:.75rem}
+        .name-input{width:100%;padding:.8rem 1rem;background:var(--input-bg);border:2px solid var(--electric-purple);border-radius:12px;color:white;font-family:'Righteous',cursive;font-size:.95rem;text-align:center;outline:none;transition:all .3s}
+        .name-input:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,77,141,.3)}
+        .name-input::placeholder{color:rgba(255,255,255,.4)}
+        .start-btn{padding:.875rem 2.5rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));border:none;border-radius:14px;color:white;font-family:'Rubik Bubbles',cursive;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 8px 25px rgba(255,77,141,.4)}
+        .start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,77,141,.6)}
+        .start-btn:disabled{opacity:.5;cursor:not-allowed}
+        .quiz-meta{margin-top:.75rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.6)}
+        /* Question */
+        .question-screen{display:none;animation:fadeIn .3s ease;padding:.5rem 0}
+        .question-counter{font-family:'Chewy',cursive;font-size:.9rem;color:rgba(255,255,255,.6);text-align:center;margin-bottom:.75rem}
+        .question-text{font-family:'Chewy',cursive;font-size:clamp(1.1rem,4vw,1.4rem);text-align:center;margin-bottom:1.25rem;color:white;line-height:1.4;padding:.5rem}
+        .options-grid{display:flex;flex-direction:column;gap:.75rem}
+        .option-text-only{background:var(--card-bg);border:2px solid rgba(199,125,255,.3);border-radius:14px;padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+        .option-text-only:hover:not(.disabled){border-color:var(--electric-purple);transform:translateX(5px)}
+        .option-letter{width:30px;height:30px;background:rgba(199,125,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.85rem;color:var(--cyan-blast);flex-shrink:0}
+        .option-label{display:flex;align-items:center;gap:.5rem;font-size:.95rem}
+        .option-with-image{background:var(--card-bg);border:2px solid rgba(199,125,255,.3);border-radius:14px;padding:.875rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+        .option-with-image:hover:not(.disabled){border-color:var(--electric-purple);transform:translateY(-3px)}
+        .option-image-box{width:50px;height:50px;background:rgba(199,125,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+        .option-text{font-size:.95rem}
+        .check-mark,.x-mark{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;font-size:.85rem}
+        .check-mark{background:var(--cyan-blast);color:var(--deep-bg)}
+        .x-mark{background:var(--neon-pink);color:white}
+        .option-text-only.correct,.option-with-image.correct{border-color:var(--cyan-blast);background:rgba(255,143,171,.08)}
+        .option-text-only.correct .check-mark,.option-with-image.correct .check-mark{opacity:1}
+        .option-text-only.wrong,.option-with-image.wrong{border-color:var(--neon-pink);background:rgba(255,77,141,.08)}
+        .option-text-only.wrong .x-mark,.option-with-image.wrong .x-mark{opacity:1}
+        .option-text-only.disabled,.option-with-image.disabled{cursor:default}
+        /* Timer */
+        .timer-wrap{display:flex;align-items:center;justify-content:flex-end;gap:.4rem;margin-bottom:.5rem}
+        .timer-svg{transform:rotate(-90deg);flex-shrink:0}
+        .timer-bg{fill:none;stroke:rgba(199,125,255,.25);stroke-width:4}
+        .timer-circle{fill:none;stroke-width:4;stroke-linecap:round;stroke-dasharray:138;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;stroke:var(--cyan-blast)}
+        .timer-circle.urgent{stroke:var(--neon-pink)}
+        .timer-text{font-family:'Rubik Bubbles',cursive;font-size:1rem;color:white;min-width:22px;text-align:center}
+        .timer-text.urgent{color:var(--neon-pink);animation:tPulse .4s infinite alternate}
+        @keyframes tPulse{from{opacity:1}to{opacity:.5}}
+        /* Mid loading */
+        .mid-loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 55px);gap:1rem}
+        /* Results */
+        .result-screen{display:none;animation:fadeIn .5s ease;padding:1rem 0}
+        .score-circle-container{display:flex;justify-content:center;margin-bottom:1.5rem;position:relative}
+        .score-svg{transform:rotate(-90deg)}
+        .score-bg{fill:none;stroke:rgba(199,125,255,.2);stroke-width:10}
+        .score-circle{fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1.2s ease}
+        .score-text-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+        .score-percent{font-family:'Bungee Shade',cursive;font-size:2rem;background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .result-message{font-family:'Bungee Shade',cursive;font-size:clamp(1.2rem,5vw,1.6rem);background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.4rem}
+        .result-subtitle{font-family:'Chewy',cursive;font-size:1rem;color:rgba(255,255,255,.7);text-align:center;margin-bottom:1.5rem}
+        /* Leaderboard */
+        .leaderboard-section{background:var(--card-bg);border:2px solid rgba(199,125,255,.3);border-radius:20px;padding:1.25rem;margin-bottom:1.5rem}
+        .leaderboard-title{font-family:'Chewy',cursive;font-size:1rem;color:var(--lemon-yellow);display:flex;align-items:center;gap:.4rem;margin-bottom:1rem}
+        .leaderboard-item{display:flex;align-items:center;padding:.6rem .25rem;border-bottom:1px solid rgba(199,125,255,.1)}
+        .leaderboard-item:last-child{border-bottom:none}
+        .leaderboard-item.you{background:rgba(255,77,141,.08);border-radius:10px;padding:.6rem .5rem}
+        .rank{width:28px;height:28px;background:rgba(199,125,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik Bubbles',cursive;font-size:.8rem;margin-right:.75rem;flex-shrink:0}
+        .player-name{flex:1;font-size:.9rem}
+        .player-score{font-family:'Rubik Bubbles',cursive;color:var(--cyan-blast);font-size:.95rem}
+        /* Result actions */
+        .result-actions{display:flex;flex-direction:column;gap:.75rem}
+        .action-btn{padding:.875rem;border:none;border-radius:14px;font-family:'Rubik Bubbles',cursive;font-size:.95rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:.5rem;text-align:center}
+        .action-btn.primary{background:linear-gradient(135deg,var(--neon-pink),var(--hot-orange));color:white;box-shadow:0 6px 20px rgba(255,77,141,.3)}
+        .action-btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,77,141,.5)}
+        .action-btn.secondary{background:rgba(199,125,255,.15);color:var(--electric-purple);border:2px solid rgba(199,125,255,.4)}
+        .action-btn.secondary:hover{background:rgba(199,125,255,.25)}
+        /* Breakdown */
+        .breakdown-section{margin-top:1.5rem}
+        .breakdown-title{font-family:'Chewy',cursive;font-size:1rem;color:var(--lemon-yellow);display:flex;align-items:center;gap:.4rem;margin-bottom:.875rem}
+        .breakdown-item{background:var(--card-bg);border-radius:14px;padding:1rem;margin-bottom:.75rem;border-left:4px solid transparent}
+        .breakdown-item.ca{border-left-color:var(--cyan-blast)}
+        .breakdown-item.wa{border-left-color:var(--neon-pink)}
+        .breakdown-q{display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.5rem;font-family:'Chewy',cursive;font-size:.9rem}
+        .breakdown-qn{background:rgba(199,125,255,.3);border-radius:6px;padding:.1rem .4rem;font-size:.75rem;flex-shrink:0;margin-top:1px}
+        .breakdown-your{font-size:.82rem;display:flex;align-items:center;gap:.4rem}
+        .breakdown-your.right{color:var(--cyan-blast)}
+        .breakdown-your.wrong{color:var(--neon-pink)}
+        .breakdown-correct-lbl{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.3rem;display:flex;align-items:center;gap:.4rem}
+        /* Confetti */
+        .confetti{position:fixed;width:10px;height:10px;top:-10px;border-radius:2px;animation:fall linear forwards;z-index:999}
+        @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+        /* Share sheet */
+        .share-sheet{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:600;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
+        .share-sheet.active{opacity:1;visibility:visible}
+        .share-sheet-inner{background:var(--card-bg);border:2px solid var(--electric-purple);border-radius:24px 24px 0 0;padding:1.5rem;width:100%;max-width:480px;animation:slideUp .3s ease}
+        @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+        .share-sheet-title{font-family:'Bungee Shade',cursive;font-size:1.1rem;background:linear-gradient(135deg,var(--cyan-blast),var(--lemon-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:.3rem}
+        .share-sheet-sub{font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,255,255,.6);text-align:center;margin-bottom:1.25rem}
+        .share-btns-row{display:flex;gap:.75rem;margin-bottom:1rem}
+        .share-app-btn{flex:1;padding:.8rem .5rem;border:none;border-radius:14px;color:white;font-family:'Righteous',cursive;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.35rem;transition:all .3s;font-size:.75rem}
+        .share-app-btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
+        .share-app-btn .sab-icon{font-size:1.5rem}
+        .share-app-btn.wa{background:linear-gradient(135deg,#25D366,#128C7E)}
+        .share-app-btn.tg{background:linear-gradient(135deg,#0088cc,#005fa3)}
+        .share-app-btn.cp{background:linear-gradient(135deg,var(--electric-purple),#9d4edd)}
+        .share-app-btn.more{background:linear-gradient(135deg,#374151,#1f2937)}
+        .share-cancel{width:100%;padding:.75rem;background:transparent;border:2px solid rgba(255,255,255,.15);border-radius:12px;color:rgba(255,255,255,.6);font-family:'Righteous',cursive;font-size:.9rem;cursor:pointer;transition:all .3s}
+        .share-cancel:hover{border-color:var(--neon-pink);color:var(--neon-pink)}
+        /* Preview banner */
+        .preview-banner{display:none;background:rgba(255,190,11,.15);border:1.5px solid rgba(255,190,11,.4);border-radius:10px;padding:.5rem .875rem;margin-bottom:1rem;font-family:'Chewy',cursive;font-size:.85rem;color:rgba(255,190,11,.9);align-items:center;gap:.5rem;text-align:center;justify-content:center}
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="noise"></div>
+
+<nav>
+    <a href="index.html" class="logo">DoYouKnowMe</a>
+    <div class="quiz-info">
+        <div class="progress-bar"><div class="progress-fill" id="navProgress"></div></div>
+        <span id="quizProgressText">0/0</span>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Loading -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading quiz... 💕</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-screen" id="errorScreen" style="display:none">
+        <div class="error-icon">💔</div>
+        <div class="error-title">Quiz Not Found</div>
+        <div class="error-text">This link may be invalid or expired.</div>
+        <a href="create-quiz.html" class="start-btn" style="text-decoration:none;margin-top:.5rem">Create Your Own</a>
+    </div>
+
+    <!-- Intro -->
+    <div class="intro-screen" id="introScreen" style="display:none">
+        <div class="preview-banner" id="previewBanner">
+            <span class="iconify" data-icon="ph:eye-bold"></span> Preview mode — answers won't be saved
+        </div>
+        <div class="creator-avatar">💕</div>
+        <h1 class="intro-title" id="introTitle">Loading...</h1>
+        <p class="intro-subtitle" id="introSubtitle"></p>
+        <div class="name-input-wrapper">
+            <input class="name-input" id="playerName" placeholder="Your name..." maxlength="25" autocomplete="off">
+        </div>
+        <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>Let's Go! 💕</button>
+        <p class="quiz-meta" id="quizMeta"></p>
+    </div>
+
+    <!-- Question -->
+    <div class="question-screen" id="questionScreen">
+        <div class="timer-wrap" id="timerWrap" style="display:none">
+            <svg class="timer-svg" width="50" height="50" viewBox="0 0 50 50">
+                <circle class="timer-bg" cx="25" cy="25" r="22"/>
+                <circle class="timer-circle" cx="25" cy="25" r="22" id="timerCircle"/>
+            </svg>
+            <div class="timer-text" id="timerText">--</div>
+        </div>
+        <div class="question-counter" id="questionCounter"></div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-grid" id="optionsGrid"></div>
+    </div>
+
+    <!-- Mid loading -->
+    <div class="mid-loading" id="midLoading">
+        <div class="spinner"></div>
+        <div class="loading-text">Calculating results... 💕</div>
+    </div>
+
+    <!-- Results -->
+    <div class="result-screen" id="resultScreen">
+        <div class="score-circle-container">
+            <svg class="score-svg" width="160" height="160" viewBox="0 0 160 160">
+                <circle class="score-bg" cx="80" cy="80" r="70"/>
+                <circle class="score-circle" cx="80" cy="80" r="70" id="scoreCircle" stroke="url(#scoreGradDykm)"/>
+                <defs>
+                    <linearGradient id="scoreGradDykm" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#ff4d8d"/>
+                        <stop offset="100%" style="stop-color:#ff758f"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="score-text-overlay">
+                <div class="score-percent" id="scorePercent">0%</div>
+            </div>
+        </div>
+        <div class="result-message" id="resultMessage"></div>
+        <div class="result-subtitle" id="resultSubtitle"></div>
+
+        <div class="leaderboard-section">
+            <div class="leaderboard-title"><span class="iconify" data-icon="ph:trophy-bold"></span> Leaderboard</div>
+            <div id="leaderboardList"></div>
+        </div>
+
+        <div class="result-actions">
+            <button class="action-btn primary" onclick="openShareSheet()">
+                <span class="iconify" data-icon="ph:share-network-bold"></span> Share My Score
+            </button>
+            <a href="create-quiz.html" class="action-btn secondary" style="text-decoration:none">
+                <span class="iconify" data-icon="ph:plus-bold"></span> Create My Own Quiz
+            </a>
+        </div>
+
+        <div class="breakdown-section" id="breakdownSection" style="display:none">
+            <div class="breakdown-title"><span class="iconify" data-icon="ph:list-checks-bold"></span> Answer Breakdown</div>
+            <div id="breakdownList"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden scorecard canvas -->
+<canvas id="scorecardCanvas" width="800" height="450" style="display:none"></canvas>
+
+<!-- Share Sheet -->
+<div class="share-sheet" id="shareSheet">
+    <div class="share-sheet-inner">
+        <div class="share-sheet-title">Share Your Score 💕</div>
+        <div class="share-sheet-sub" id="shareSheetSub">You scored on this quiz!</div>
+        <div class="share-btns-row">
+            <button class="share-app-btn wa" onclick="shareScorecard('whatsapp')">
+                <span class="sab-icon iconify" data-icon="ph:whatsapp-logo-bold"></span>WhatsApp
+            </button>
+            <button class="share-app-btn tg" onclick="shareScorecard('telegram')">
+                <span class="sab-icon iconify" data-icon="ph:telegram-logo-bold"></span>Telegram
+            </button>
+            <button class="share-app-btn cp" onclick="shareScorecard('copy')">
+                <span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link
+            </button>
+            <button class="share-app-btn more" onclick="shareScorecard('native')">
+                <span class="sab-icon iconify" data-icon="ph:export-bold"></span>More
+            </button>
+        </div>
+        <button class="share-cancel" onclick="closeShareSheet()">
+            <span class="iconify" data-icon="ph:x-bold"></span> Cancel
+        </button>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion, increment }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAVmDJy2Iowj6BVK3HF8sb2FPuew2wBny8",
+    authDomain: "realornah-app.firebaseapp.com",
+    projectId: "realornah-app",
+    storageBucket: "realornah-app.firebasestorage.app",
+    messagingSenderId: "313279191530",
+    appId: "1:313279191530:web:639185b8807f68e24cba93"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+window._db = db;
+
+window.loadQuiz = async function(quizId) {
+    const snap = await getDoc(doc(db, "quizzes", quizId));
+    if (!snap.exists()) return null;
+    return snap.data();
+};
+
+window.saveScore = async function(quizId, playerName, score) {
+    const ref = doc(db, "quizzes", quizId);
+    await updateDoc(ref, {
+        plays: increment(1),
+        scores: arrayUnion({ name: playerName, score, playedAt: new Date().toISOString() })
+    });
+};
+
+window.getLeaderboard = async function(quizId) {
+    const snap = await getDoc(doc(db, "quizzes", quizId));
+    if (!snap.exists()) return [];
+    return snap.data().scores || [];
+};
+</script>
+
+<script>
+let quiz = null, currentQ = 0, score = 0, playerName = '';
+let canAnswer = true, quizId = null, isPreview = false;
+let playerAnswers = [];
+let timerSecs = 0, timerInterval = null;
+const TIMER_DASH = 138;
+
+// ── Sounds ───────────────────────────────────────────────────
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getAudio() { if (!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
+function playCorrect() {
+    try {
+        const ctx = getAudio(), o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.setValueAtTime(600, ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.15);
+        g.gain.setValueAtTime(0.3, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        o.start(); o.stop(ctx.currentTime + 0.3);
+    } catch(e){}
+}
+function playWrong() {
+    try {
+        const ctx = getAudio(), o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sawtooth'; o.connect(g); g.connect(ctx.destination);
+        o.frequency.setValueAtTime(220, ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.25);
+        g.gain.setValueAtTime(0.25, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        o.start(); o.stop(ctx.currentTime + 0.35);
+    } catch(e){}
+}
+
+const params = new URLSearchParams(location.search);
+quizId       = params.get('id');
+isPreview    = params.get('preview') === '1';
+
+async function init() {
+    if (!quizId) { showError(); return; }
+    try {
+        quiz = await window.loadQuiz(quizId);
+        if (!quiz) { showError(); return; }
+        document.getElementById('loadingScreen').style.display = 'none';
+        if (isPreview) document.getElementById('previewBanner').style.display = 'flex';
+        document.getElementById('introTitle').textContent    = `Quiz by ${quiz.creator}`;
+        document.getElementById('introSubtitle').textContent = `Does your partner really know you?\nAnswer all ${quiz.questions.length} questions!`;
+        document.getElementById('quizMeta').textContent      = `${quiz.questions.length} questions${quiz.timerSecs ? ' · ⏱ ' + quiz.timerSecs + 's/q' : ''} · Good luck! 💕`;
+        document.getElementById('introScreen').style.display = 'flex';
+        document.title = `${quiz.creator}'s Quiz - DoYouKnowMe`;
+    } catch(e) { showError(); console.error(e); }
+}
+
+function showError() {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('errorScreen').style.display  = 'flex';
+}
+
+document.getElementById('playerName').addEventListener('input', function() {
+    document.getElementById('startBtn').disabled = this.value.trim() === '';
+});
+
+function startQuiz() {
+    playerName = document.getElementById('playerName').value.trim();
+    if (!playerName) return;
+    playerAnswers = [];
+    document.getElementById('introScreen').style.display    = 'none';
+    document.getElementById('questionScreen').style.display = 'block';
+    showQuestion(); updateNavProgress();
+}
+
+function showQuestion() {
+    clearInterval(timerInterval);
+    const q = quiz.questions[currentQ];
+    document.getElementById('questionCounter').textContent = `Question ${currentQ + 1} / ${quiz.questions.length}`;
+    document.getElementById('questionText').textContent    = q.question;
+    const grid = document.getElementById('optionsGrid');
+    grid.innerHTML = '';
+    const letters = ['A','B','C','D'];
+
+    q.options.forEach((opt, idx) => {
+        let card;
+        if (q.type === 'image') {
+            card = document.createElement('div');
+            card.className = 'option-with-image';
+            card.innerHTML = `
+                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
+                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
+                <div class="option-image-box"><span class="iconify" data-icon="${opt.icon}"></span></div>
+                <div class="option-text">${opt.text || ''}</div>`;
+        } else {
+            card = document.createElement('div');
+            card.className = 'option-text-only';
+            card.innerHTML = `
+                <div class="check-mark"><span class="iconify" data-icon="ph:check-bold"></span></div>
+                <div class="x-mark"><span class="iconify" data-icon="ph:x-bold"></span></div>
+                <div class="option-label">
+                    <span class="option-letter">${letters[idx]}</span>
+                    <span>${opt.text}</span>
+                </div>`;
+        }
+        card.onclick = () => selectAnswer(idx, card);
+        grid.appendChild(card);
+    });
+
+    if (window.Iconify) window.Iconify.scan();
+    canAnswer = true;
+    if (quiz.timerSecs && quiz.timerSecs > 0) startTimer(quiz.timerSecs);
+}
+
+function startTimer(secs) {
+    clearInterval(timerInterval);
+    timerSecs = secs;
+    const wrap = document.getElementById('timerWrap'), circle = document.getElementById('timerCircle'), txt = document.getElementById('timerText');
+    wrap.style.display = 'flex';
+    txt.textContent = timerSecs; circle.style.strokeDashoffset = 0;
+    circle.classList.remove('urgent'); txt.className = 'timer-text';
+    timerInterval = setInterval(() => {
+        timerSecs--;
+        circle.style.strokeDashoffset = TIMER_DASH * (1 - timerSecs / secs);
+        txt.textContent = timerSecs;
+        if (timerSecs <= 5) { txt.className = 'timer-text urgent'; circle.classList.add('urgent'); }
+        if (timerSecs <= 0) {
+            clearInterval(timerInterval); timerInterval = null;
+            wrap.style.display = 'none';
+            if (canAnswer) {
+                canAnswer = false;
+                const allCards = document.querySelectorAll('.option-with-image, .option-text-only');
+                playWrong();
+                allCards[quiz.questions[currentQ].correct].classList.add('correct');
+                allCards.forEach(c => c.classList.add('disabled'));
+                playerAnswers.push({ qIdx: currentQ, chosen: -1, correct: quiz.questions[currentQ].correct });
+                setTimeout(() => { currentQ++; if (currentQ < quiz.questions.length) { showQuestion(); updateNavProgress(); } else showMidLoading(); }, 1000);
+            }
+        }
+    }, 1000);
+}
+
+function selectAnswer(selectedIdx, cardEl) {
+    if (!canAnswer) return;
+    canAnswer = false;
+    clearInterval(timerInterval);
+    document.getElementById('timerWrap').style.display = 'none';
+    const q = quiz.questions[currentQ];
+    const isCorrect = selectedIdx === q.correct;
+    const allCards  = document.querySelectorAll('.option-with-image, .option-text-only');
+    playerAnswers.push({ qIdx: currentQ, chosen: selectedIdx, correct: q.correct });
+    if (isCorrect) { score++; cardEl.classList.add('correct'); playCorrect(); }
+    else { cardEl.classList.add('wrong'); allCards[q.correct].classList.add('correct'); playWrong(); }
+    allCards.forEach(c => c.classList.add('disabled'));
+    setTimeout(() => { currentQ++; if (currentQ < quiz.questions.length) { showQuestion(); updateNavProgress(); } else showMidLoading(); }, 1000);
+}
+
+function updateNavProgress() {
+    const pct = (currentQ / quiz.questions.length) * 100;
+    document.getElementById('navProgress').style.width      = pct + '%';
+    document.getElementById('quizProgressText').textContent = `${currentQ + 1}/${quiz.questions.length}`;
+}
+
+function showMidLoading() {
+    document.getElementById('questionScreen').style.display = 'none';
+    document.getElementById('midLoading').style.display    = 'flex';
+    document.getElementById('navProgress').style.width     = '100%';
+    saveAndShowResults();
+}
+
+async function saveAndShowResults() {
+    const percentage = Math.round((score / quiz.questions.length) * 100);
+    if (!isPreview) {
+        try { await window.saveScore(quizId, playerName, percentage); } catch(e) { console.error(e); }
+        // Fire MailerLite notify (silent)
+        try {
+            const fresh = await window.loadQuiz(quizId);
+            const newPlays = fresh?.plays || 0;
+            if (fresh?.creatorEmail && newPlays > 0 && newPlays % 3 === 0) {
+                fetch('/api/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        creatorEmail: fresh.creatorEmail,
+                        creatorName:  fresh.creator,
+                        quizId, plays: newPlays,
+                        quizLink: `${location.origin}/quiz.html?id=${quizId}`,
+                    }),
+                }).catch(() => {});
+            }
+        } catch(e) {}
+    }
+
+    let allScores = [];
+    if (!isPreview) { try { allScores = await window.getLeaderboard(quizId); } catch(e) {} }
+
+    document.getElementById('midLoading').style.display   = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    document.getElementById('scorePercent').textContent   = percentage + '%';
+    setTimeout(() => {
+        document.getElementById('scoreCircle').style.strokeDashoffset = 440 - (440 * percentage) / 100;
+    }, 100);
+
+    const msgs = [
+        [90, "Soulmate Confirmed 💍",   `You know ${quiz.creator} better than anyone!`],
+        [70, "Great Partner 💕",         `You know ${quiz.creator} really well!`],
+        [50, "Still Learning 😊",        `You know some things about ${quiz.creator}.`],
+        [30, "You Sure You're Dating? 🤔", `Do you even know ${quiz.creator}?`],
+        [0,  "We Need to Talk 💀",       `You're basically strangers!`],
+    ];
+    const [, msg, sub] = msgs.find(([t]) => percentage >= t);
+    document.getElementById('resultMessage').textContent  = msg;
+    document.getElementById('resultSubtitle').textContent = sub;
+    document.getElementById('shareSheetSub').textContent  = `"I scored ${percentage}% on ${quiz.creator}'s DoYouKnowMe quiz! 💕"`;
+    if (percentage >= 90) createConfetti();
+
+    const sorted = [...allScores].sort((a,b) => b.score - a.score);
+    const list   = document.getElementById('leaderboardList');
+    list.innerHTML = '';
+    if (sorted.length === 0 && isPreview) {
+        list.innerHTML = '<div style="text-align:center;font-family:Chewy,cursive;color:rgba(255,255,255,.5);padding:1rem">Preview mode — no leaderboard data</div>';
+    } else {
+        sorted.forEach((p, idx) => {
+            const item = document.createElement('div');
+            const isMe = p.name === playerName;
+            item.className = 'leaderboard-item' + (isMe ? ' you' : '');
+            item.innerHTML = `<div class="rank">${idx+1}</div><div class="player-name">${p.name}${isMe ? ' (You)' : ''}</div><div class="player-score">${p.score}%</div>`;
+            list.appendChild(item);
+        });
+    }
+    buildBreakdown();
+    if (window.Iconify) window.Iconify.scan();
+}
+
+function buildBreakdown() {
+    const sec = document.getElementById('breakdownSection'), list = document.getElementById('breakdownList');
+    sec.style.display = 'block'; list.innerHTML = '';
+    playerAnswers.forEach((pa, i) => {
+        const q = quiz.questions[pa.qIdx], isRight = pa.chosen === pa.correct;
+        const letters = ['A','B','C','D'];
+        const chosenLabel  = pa.chosen === -1 ? 'No answer (timed out)' : (q.options[pa.chosen]?.text || letters[pa.chosen]);
+        const correctLabel = q.options[pa.correct]?.text || letters[pa.correct];
+        const div = document.createElement('div');
+        div.className = `breakdown-item ${isRight ? 'ca' : 'wa'}`;
+        div.innerHTML = `
+            <div class="breakdown-q"><span class="breakdown-qn">Q${i+1}</span><span>${q.question}</span></div>
+            <div class="breakdown-your ${isRight ? 'right' : 'wrong'}">
+                <span class="iconify" data-icon="${isRight ? 'ph:check-circle-bold' : 'ph:x-circle-bold'}"></span>
+                Your answer: <strong>${chosenLabel}</strong>
+            </div>
+            ${!isRight ? `<div class="breakdown-correct-lbl"><span class="iconify" data-icon="ph:lightbulb-bold"></span> Correct: <strong>${correctLabel}</strong></div>` : ''}`;
+        list.appendChild(div);
+    });
+    if (window.Iconify) window.Iconify.scan();
+}
+
+/* ── Scorecard canvas ──────────────────────────────────────── */
+async function generateScorecardImage() {
+    const fontsToLoad = [
+        { family: 'Righteous',   url: 'https://fonts.gstatic.com/s/righteous/v17/1cXxaUPXBpj2rGoU7C9WiHGF.woff2' },
+        { family: 'Chewy',       url: 'https://fonts.gstatic.com/s/chewy/v18/uU9PCBUV4YenPWJU7xPb3vyHmlI.woff2' },
+        { family: 'BungeeShade', url: 'https://fonts.gstatic.com/s/bungeeshade/v13/Gg8xN5oFbgLvHAfNl2YbnA8aZouLIA.woff2' },
+    ];
+    await Promise.all(fontsToLoad.map(async ({ family, url }) => {
+        if (document.fonts.check(`16px "${family}"`)) return;
+        try { const f = new FontFace(family, `url(${url})`); await f.load(); document.fonts.add(f); } catch(e) {}
+    }));
+    await document.fonts.ready;
+
+    return new Promise((resolve) => {
+        const canvas = document.getElementById('scorecardCanvas');
+        const ctx    = canvas.getContext('2d');
+        const W = 800, H = 450;
+        canvas.width = W; canvas.height = H;
+        const percentage = Math.round((score / quiz.questions.length) * 100);
+
+        // Background — DYKM deep rose
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#1a0015'); bg.addColorStop(1, '#2a0023');
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(199,125,255,0.1)'; ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 50) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+        for (let y = 0; y < H; y += 50) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+        // Top accent
+        const bar = ctx.createLinearGradient(0,0,W,0);
+        bar.addColorStop(0,'#ff4d8d'); bar.addColorStop(0.5,'#c77dff'); bar.addColorStop(1,'#ffc2d1');
+        ctx.fillStyle = bar; ctx.fillRect(0, 0, W, 6);
+
+        // Score circle
+        const cx = W/2, cy = 190, r = 90;
+        ctx.strokeStyle = 'rgba(199,125,255,0.25)'; ctx.lineWidth = 12;
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+        const grad = ctx.createLinearGradient(cx-r, cy, cx+r, cy);
+        grad.addColorStop(0,'#ff4d8d'); grad.addColorStop(1,'#ff758f');
+        ctx.strokeStyle = grad; ctx.lineWidth = 12; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + (Math.PI*2 * percentage/100)); ctx.stroke();
+
+        // Score text
+        ctx.font = '700 56px "BungeeShade", cursive'; ctx.textAlign = 'center';
+        const pctGrad = ctx.createLinearGradient(cx-80, cy, cx+80, cy);
+        pctGrad.addColorStop(0,'#ff4d8d'); pctGrad.addColorStop(1,'#ff758f');
+        ctx.fillStyle = pctGrad; ctx.fillText(percentage + '%', cx, cy + 20);
+
+        // Creator + brand
+        ctx.font = '700 28px "Righteous", cursive';
+        const titGrad = ctx.createLinearGradient(0, 320, W, 320);
+        titGrad.addColorStop(0,'#ffc2d1'); titGrad.addColorStop(1,'#c77dff');
+        ctx.fillStyle = titGrad; ctx.fillText(`${quiz.creator}'s Quiz`, cx, 320);
+
+        ctx.font = '24px "Chewy", cursive'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        const msgs = [[90,'Soulmate Confirmed 💍'],[70,'Great Partner 💕'],[50,'Still Learning 😊'],[30,'You Sure You\'re Dating? 🤔'],[0,'We Need to Talk 💀']];
+        const [, msg] = msgs.find(([t]) => percentage >= t);
+        ctx.fillText(msg, cx, 358);
+        ctx.font = '18px "Righteous", cursive'; ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.fillText('doyouknowme.app', cx, 422);
+        ctx.textAlign = 'left'; ctx.font = '700 18px "Righteous", cursive'; ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillText(playerName, 28, 40);
+        resolve(canvas.toDataURL('image/png'));
+    });
+}
+
+/* ── Share sheet ───────────────────────────────────────────── */
+function openShareSheet() { document.getElementById('shareSheet').classList.add('active'); if (window.Iconify) window.Iconify.scan(); }
+function closeShareSheet() { document.getElementById('shareSheet').classList.remove('active'); }
+document.getElementById('shareSheet').addEventListener('click', e => { if (e.target === e.currentTarget) closeShareSheet(); });
+
+async function shareScorecard(platform) {
+    const percentage = Math.round((score / quiz.questions.length) * 100);
+    const text = `I scored ${percentage}% on ${quiz.creator}'s DoYouKnowMe quiz! 💕 Can you beat me? ${location.href}`;
+    const url  = location.href;
+    if (platform === 'whatsapp') {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        triggerImageDownload(await generateScorecardImage());
+    } else if (platform === 'telegram') {
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(`I scored ${percentage}% on ${quiz.creator}'s DoYouKnowMe quiz! 💕`)}`, '_blank');
+        triggerImageDownload(await generateScorecardImage());
+    } else if (platform === 'copy') {
+        navigator.clipboard.writeText(url).then(() => {
+            const btn = document.querySelector('.share-app-btn.cp');
+            btn.innerHTML = '<span class="sab-icon iconify" data-icon="ph:check-bold"></span>Copied!';
+            if (window.Iconify) window.Iconify.scan();
+            setTimeout(() => { btn.innerHTML = '<span class="sab-icon iconify" data-icon="ph:copy-bold"></span>Copy Link'; if (window.Iconify) window.Iconify.scan(); }, 2000);
+        });
+        return;
+    } else if (platform === 'native') {
+        const imgData = await generateScorecardImage();
+        try {
+            const blob = await (await fetch(imgData)).blob();
+            const file = new File([blob], 'dykm-score.png', {type:'image/png'});
+            if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({ files:[file], title:'DoYouKnowMe Score', text }); }
+            else if (navigator.share) { await navigator.share({ title:'DoYouKnowMe', text, url }); }
+            else triggerImageDownload(imgData);
+        } catch { triggerImageDownload(await generateScorecardImage()); }
+    }
+    closeShareSheet();
+}
+
+function triggerImageDownload(dataUrl) {
+    const a = document.createElement('a'); a.href = dataUrl; a.download = 'dykm-scorecard.png'; a.click();
+}
+
+function createConfetti() {
+    const colors = ['#ff4d8d','#c77dff','#ff758f','#ffc2d1','#ff8fab'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const c = document.createElement('div'); c.className = 'confetti';
+            c.style.left = Math.random()*100+'vw';
+            c.style.background = colors[Math.floor(Math.random()*colors.length)];
+            c.style.animationDuration = (Math.random()*2+2)+'s';
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 4000);
+        }, i * 50);
+    }
+}
+
+window.onload = () => { init(); };
+</script>
+</body>
+</html>
